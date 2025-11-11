@@ -2,6 +2,7 @@ package com.example.DAO
 
 import com.example.models.Usuario
 import com.example.models.UsuarioLogin
+import com.example.models.UsuarioRol
 import helpers.Database
 import kotlin.io.use
 
@@ -44,7 +45,6 @@ class UsuarioDAOImpl : UsuarioDAO  {
                     experiencia = resultSet.getInt("experiencia"),
                     nivel = resultSet.getInt("nivel"),
                     id_casa = resultSet.getInt("id_casa")
-
                 )
             }
         }
@@ -64,11 +64,46 @@ class UsuarioDAOImpl : UsuarioDAO  {
     }
 
     override fun login(p: UsuarioLogin): Usuario? {
-        TODO("Not yet implemented")
+        val sql = "SELECT * FROM usuarios WHERE id = ? and contraseña = ?"
+        val connection = Database.getConnection()
+        connection?.use {
+            val statement = it.prepareStatement(sql)
+            statement.setInt(1, p.id)
+            statement.setString(2, p.password)
+            val resultSet = statement.executeQuery()
+
+            if (resultSet.next()){
+                return Usuario(
+                    id = resultSet.getInt("id"),
+                    nombre = resultSet.getString("nombre"),
+                    email = resultSet.getString("email"),
+                    contrasenya = resultSet.getString("contraseña"),
+                    experiencia = resultSet.getInt("experiencia"),
+                    nivel = resultSet.getInt("nivel"),
+                    id_casa = resultSet.getInt("id_casa")
+                )
+            }
+        }
+        return null
     }
 
-    override fun obtenerRolUsuario(id: Int): Int? {
-        TODO("Not yet implemented")
+    override fun obtenerRolUsuario(id: Int): UsuarioRol? {
+        val sql = "SELECT * FROM usuario_rol WHERE id_usuario = ?"
+        val connection = Database.getConnection()
+        connection?.use {
+            val statement = it.prepareStatement(sql)
+            statement.setInt(1, id)
+            val resultSet = statement.executeQuery()
+
+            if (resultSet.next()){
+                return UsuarioRol(
+                    id_usuario = resultSet.getInt("id_usuario"),
+                    id_rol = resultSet.getInt("id_rol")
+
+                )
+            }
+        }
+        return null
     }
 
 }
