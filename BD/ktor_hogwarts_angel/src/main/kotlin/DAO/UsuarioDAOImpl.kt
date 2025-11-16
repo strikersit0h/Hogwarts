@@ -4,9 +4,9 @@ import com.example.models.Usuario
 import com.example.models.UsuarioLogin
 import com.example.models.UsuarioRol
 import helpers.Database
-import kotlin.io.use
 
 class UsuarioDAOImpl : UsuarioDAO  {
+
     override fun insertar(usuario: Usuario): Boolean {
         val sql = "INSERT INTO usuarios (nombre, email, contraseña, experiencia, nivel, id_casa) VALUES (?, ?, ?, ?, ?, ?)"
         val connection = Database.getConnection()
@@ -64,11 +64,11 @@ class UsuarioDAOImpl : UsuarioDAO  {
     }
 
     override fun login(p: UsuarioLogin): Usuario? {
-        val sql = "SELECT * FROM usuarios WHERE id = ? and contraseña = ?"
+        val sql = "SELECT * FROM usuarios WHERE email = ? AND contraseña = ?"
         val connection = Database.getConnection()
         connection?.use {
             val statement = it.prepareStatement(sql)
-            statement.setInt(1, p.id)
+            statement.setString(1, p.email)
             statement.setString(2, p.password)
             val resultSet = statement.executeQuery()
 
@@ -87,7 +87,8 @@ class UsuarioDAOImpl : UsuarioDAO  {
         return null
     }
 
-    override fun obtenerRolUsuario(id: Int): UsuarioRol? {
+    override fun obtenerRolUsuario(id: Int): List<UsuarioRol> {
+        val roles = mutableListOf<UsuarioRol>()
         val sql = "SELECT * FROM usuario_rol WHERE id_usuario = ?"
         val connection = Database.getConnection()
         connection?.use {
@@ -95,15 +96,15 @@ class UsuarioDAOImpl : UsuarioDAO  {
             statement.setInt(1, id)
             val resultSet = statement.executeQuery()
 
-            if (resultSet.next()){
-                return UsuarioRol(
+            while (resultSet.next()){
+                val rol = UsuarioRol(
                     id_usuario = resultSet.getInt("id_usuario"),
                     id_rol = resultSet.getInt("id_rol")
-
                 )
+                roles.add(rol)
             }
         }
-        return null
+        return roles
     }
 
 }
