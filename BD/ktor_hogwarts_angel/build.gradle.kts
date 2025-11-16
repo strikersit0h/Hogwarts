@@ -23,4 +23,6 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+
+    implementation("com.mysql:mysql-connector-j:9.4.0")
 }
