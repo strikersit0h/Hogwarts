@@ -1,5 +1,4 @@
 package com.example.hogwarts_angel
-// ... tus imports
 
 import android.content.Intent
 import android.os.Bundle
@@ -43,11 +42,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.usuarioAutenticado.observe(this) { usuario ->
             if (usuario != null) {
                 Toast.makeText(this, "Login exitoso. ¡Bienvenido, ${usuario.nombre}!", Toast.LENGTH_LONG).show()
-
-                // Lógica de navegación exitosa
-
                 viewModel.usuarioAutenticado.value = null // Limpiar LiveData
-
             }
         }
 

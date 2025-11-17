@@ -3,10 +3,9 @@ package com.example.hogwarts_angel.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hogwarts_angel.api.HogwartsNetwork // Usamos tu clase de red
+import com.example.hogwarts_angel.api.HogwartsNetwork
 import com.example.hogwarts_angel.model.Usuario
 import com.example.hogwarts_angel.model.UsuarioLogin
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {

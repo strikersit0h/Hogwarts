@@ -1,14 +1,14 @@
-package com.example.hogwarts_angel // Cambia por tu paquete real
+package com.example.hogwarts_angel
 
 import android.os.Bundle
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.hogwarts_angel.databinding.ActivityRegistroBinding // Usa tu Binding
+import com.example.hogwarts_angel.databinding.ActivityRegistroBinding
 import com.example.hogwarts_angel.model.Casa
 import com.example.hogwarts_angel.model.Usuario
-import com.example.hogwarts_angel.viewmodels.RegistroViewModel // Nuevo ViewModel para esta Activity
+import com.example.hogwarts_angel.viewmodels.RegistroViewModel
 
 class RegistroActivity : AppCompatActivity() {
 
