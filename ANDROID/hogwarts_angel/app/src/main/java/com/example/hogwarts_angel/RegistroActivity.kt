@@ -52,13 +52,15 @@ class RegistroActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+
+        // Modificar esta parte para que el Ktor se encargue de asignarle la casa, es decir, que el algoritmo esté en el Ktor.
         binding.btSeleccionarCasa.setOnClickListener {
             val nombre = binding.etNombre.text.toString().trim()
             val email = binding.etEmail.text.toString().trim()
             val contrasenya = binding.etContrasenya.text.toString()
 
             if (nombre.isEmpty() || email.isEmpty() || contrasenya.isEmpty()) {
-                Toast.makeText(this, "Debes completar todos los campos de usuario.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Debes rellenar todos los campos de usuario.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
