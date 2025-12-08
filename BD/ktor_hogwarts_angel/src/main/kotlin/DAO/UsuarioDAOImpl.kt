@@ -7,7 +7,7 @@ import helpers.Database
 
 class UsuarioDAOImpl : UsuarioDAO  {
 
-    override fun insertar(usuario: Usuario): Boolean {
+    override fun insertarUsuario(usuario: Usuario): Boolean {
         val sql = "INSERT INTO usuarios (nombre, email, contraseña, experiencia, nivel, id_casa) VALUES (?, ?, ?, ?, ?, ?)"
         val connection = Database.getConnection()
         connection?.use {
@@ -27,6 +27,8 @@ class UsuarioDAOImpl : UsuarioDAO  {
         }
         return false
     }
+
+
 
     override fun obtener(id: Int): Usuario? {
         val sql = "SELECT * FROM usuarios WHERE id = ?"
@@ -60,7 +62,51 @@ class UsuarioDAOImpl : UsuarioDAO  {
     }
 
     override fun obtenerTodos(): List<Usuario> {
-        TODO("Not yet implemented")
+        val listaUsuarios: MutableList<Usuario> = mutableListOf()
+        val sql = "SELECT * FROM usuarios"
+        val connection = Database.getConnection()
+
+        connection.use {
+            val statement = it!!.prepareStatement(sql)
+            val resultSet = statement.executeQuery()
+
+            while (resultSet.next()){
+                listaUsuarios.add(
+                    Usuario(
+                        id = resultSet.getInt("id"),
+                        nombre = resultSet.getString("nombre"),
+                        email = resultSet.getString("email"),
+                        contrasenya = resultSet.getString("contraseña"),
+                        experiencia = resultSet.getInt("experiencia"),
+                        nivel = resultSet.getInt("nivel"),
+                        id_casa = resultSet.getInt("id_casa")
+                    )
+                )
+            }
+        }
+        return listaUsuarios
+    }
+
+    override fun obtenerPoblacionesActuales(): Map<Int, Int> {
+        val poblaciones: MutableMap<Int, Int> = mutableMapOf()
+
+        val sql = "SELECT id_casa, COUNT(id) AS conteo FROM usuarios GROUP BY id_casa"
+
+        val connection = Database.getConnection()
+
+        connection.use {
+            val statement = it!!.prepareStatement(sql)
+            val resultSet = statement.executeQuery()
+
+            while (resultSet.next()) {
+                val idCasa = resultSet.getInt("id_casa")
+                val conteo = resultSet.getInt("conteo")
+
+                poblaciones[idCasa] = conteo
+            }
+        }
+
+        return poblaciones
     }
 
     override fun login(p: UsuarioLogin): Usuario? {
@@ -106,5 +152,6 @@ class UsuarioDAOImpl : UsuarioDAO  {
         }
         return roles
     }
+
 
 }
