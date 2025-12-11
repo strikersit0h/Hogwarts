@@ -5,6 +5,7 @@ import com.example.DAO.UsuarioDAOImpl
 import com.example.models.SombreroRespuestas
 import com.example.models.Usuario
 import com.example.models.UsuarioLogin
+import com.example.models.UsuarioModificar
 import com.example.models.UsuarioRegistro
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -50,6 +51,38 @@ fun Route.userRouting(){
 
     route("/usuarios") {
 
+        get("/detallados") {
+            try {
+                val usuarios = usuarioDAO.obtenerTodosLosUsuariosDetallados()
+                call.respond(HttpStatusCode.OK, usuarios)
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "Error al obtener usuarios detallados: ${e.message}")
+            }
+        }
+
+        put("/{id}/roles") {
+            try {
+                val id = call.parameters["id"]?.toIntOrNull()
+                if (id == null) {
+                    call.respond(HttpStatusCode.BadRequest, "ID de usuario no válido.")
+                    return@put
+                }
+
+                // Recibe una lista de IDs de rol: [2, 3]
+                val nuevosRoles = call.receive<List<Int>>()
+                val actualizado = usuarioDAO.actualizarRolesUsuario(id, nuevosRoles)
+
+                if (actualizado) {
+                    call.respond(HttpStatusCode.OK, "Roles actualizados para el usuario $id.")
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, "No se pudieron actualizar los roles.")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                call.respond(HttpStatusCode.InternalServerError, "Error interno del servidor: ${e.message}")
+            }
+        }
+
         get {
             val usuarios = usuarioDAO.obtenerTodos()
 
@@ -57,6 +90,43 @@ fun Route.userRouting(){
                 call.respond(HttpStatusCode.OK, usuarios)
             }else{
                 call.respond(HttpStatusCode.OK, "La request ha sido correcta pero no hay usuarios.")
+            }
+        }
+
+        put {
+            try {
+                val usuarioModificar = call.receive<UsuarioModificar>()
+                val actualizado = usuarioDAO.actualizarUsuario(usuarioModificar)
+
+                if (actualizado) {
+                    call.respond(HttpStatusCode.OK, "Usuario con ID ${usuarioModificar.id} actualizado correctamente.")
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "No se pudo encontrar o actualizar el usuario con ID ${usuarioModificar.id}.")
+                }
+            } catch (e: ContentTransformationException) {
+                call.respond(HttpStatusCode.BadRequest, "Formato de datos de modificación inválido. Asegúrate de enviar {id, nombre, nivel, experiencia}.")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                call.respond(HttpStatusCode.InternalServerError, "Error interno al intentar actualizar el usuario: ${e.message}")
+            }
+        }
+
+        delete("/{id}") {
+            val id = call.parameters["id"]?.toIntOrNull()
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID de usuario inválido.")
+                return@delete
+            }
+
+            try {
+                val eliminado = usuarioDAO.eliminarUsuario(id)
+                if (eliminado) {
+                    call.respond(HttpStatusCode.NoContent, "Usuario con ID $id eliminado correctamente.")
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Usuario con ID $id no encontrado.")
+                }
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "Error interno al intentar eliminar el usuario.")
             }
         }
 
@@ -106,7 +176,7 @@ fun Route.userRouting(){
             }
         }
 
-        post("/registro"){
+        post("/registro") {
             try {
                 val datosRegistro = call.receive<UsuarioRegistro>()
                 val poblacionesActuales = usuarioDAO.obtenerPoblacionesActuales()
@@ -118,18 +188,53 @@ fun Route.userRouting(){
                     contrasenya = datosRegistro.contrasenya,
                     experiencia = 0,
                     nivel = 1,
-                    id_casa = casaAsignadaId
+                    id_casa = casaAsignadaId,
+                    id = 0
                 )
 
-                if (usuarioDAO.insertarUsuario(nuevoUsuario)) {
-                    call.respondText("Usuario registrado con éxito. Casa asignada: $casaAsignadaId", status = HttpStatusCode.Created)
+                val idAutogenerada = usuarioDAO.insertarUsuario(nuevoUsuario)
+
+                if (idAutogenerada != null && idAutogenerada > 0) {
+                    val rolAsignadoExitoso = usuarioDAO.insertarUsuarioRol(idAutogenerada)
+
+                    if (rolAsignadoExitoso) {
+                        call.respond(HttpStatusCode.Created, "Casa asignada: $casaAsignadaId y rol de Usuario asignado")
+                    } else {
+                        call.respond(HttpStatusCode.InternalServerError, "Error: Usuario creado, pero fallo al asignar rol.")
+                    }
                 } else {
-                    call.respond(HttpStatusCode.BadRequest, "Error al registrar el usuario.")
+                    call.respond(HttpStatusCode.BadRequest, "Error al registrar el usuario principal (datos duplicados o fallo de DB).")
                 }
             } catch (e: ContentTransformationException) {
                 call.respond(HttpStatusCode.BadRequest, "Formato de datos de registro inválido.")
             } catch (e: Exception){
-                call.respond(HttpStatusCode.InternalServerError, "Error interno del servidor.")
+                e.printStackTrace()
+                call.respond(HttpStatusCode.InternalServerError, "Error interno del servidor: ${e.message}")
+            }
+        }
+
+        post("/registroDirecto"){
+            try {
+                val nuevoUsuario = call.receive<Usuario>()
+
+                val idAutogenerada = usuarioDAO.insertarUsuario(nuevoUsuario)
+
+                if (idAutogenerada != null && idAutogenerada > 0) {
+                    val rolAsignadoExitoso = usuarioDAO.insertarUsuarioRol(idAutogenerada)
+
+                    if (rolAsignadoExitoso) {
+                        call.respond(HttpStatusCode.Created, "Usuario ${nuevoUsuario.nombre} registrado con ID $idAutogenerada y rol por defecto (Usuario).")
+                    } else {
+                        call.respond(HttpStatusCode.InternalServerError, "Error: Usuario creado, pero fallo al asignar rol.")
+                    }
+                } else {
+                    call.respond(HttpStatusCode.BadRequest, "Error al registrar el usuario principal (datos duplicados o fallo de DB).")
+                }
+            } catch (e: ContentTransformationException) {
+                call.respond(HttpStatusCode.BadRequest, "Formato de datos de registro inválido.")
+            } catch (e: Exception){
+                e.printStackTrace()
+                call.respond(HttpStatusCode.InternalServerError, "Error interno del servidor: ${e.message}")
             }
         }
     }

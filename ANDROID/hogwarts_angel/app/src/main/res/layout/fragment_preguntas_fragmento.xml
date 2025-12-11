@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_pregunta_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. ¿Qué cualidad valoras más en ti mismo?"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/rg_pregunta_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_pregunta_1">
+
+                <RadioButton android:id="@+id/rb_p1_a" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="El coraje para defender lo correcto." />
+                <RadioButton android:id="@+id/rb_p1_b" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="La sed de conocimiento y comprensión." />
+                <RadioButton android:id="@+id/rb_p1_c" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="La ambición de alcanzar la cima." />
+                <RadioButton android:id="@+id/rb_p1_d" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="La dedicación a ayudar a otros." />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_pregunta_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="2. Estás frente a un obstáculo. Tu primer instinto es:"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/rg_pregunta_1" />
+
+            <RadioGroup
+                android:id="@+id/rg_pregunta_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_pregunta_2">
+
+                <RadioButton android:id="@+id/rb_p2_a" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Lanzarte a la acción sin dudar." />
+                <RadioButton android:id="@+id/rb_p2_b" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Detenerte a analizar la situación a fondo." />
+                <RadioButton android:id="@+id/rb_p2_c" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Buscar la manera más eficiente y ventajosa." />
+                <RadioButton android:id="@+id/rb_p2_d" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Preguntar a tus amigos si necesitan ayuda primero." />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_pregunta_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="3. Si pudieras elegir un regalo mágico, ¿cuál sería?"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/rg_pregunta_2" />
+
+            <RadioGroup
+                android:id="@+id/rg_pregunta_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_pregunta_3">
+
+                <RadioButton android:id="@+id/rb_p3_a" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Una espada para la defensa." />
+                <RadioButton android:id="@+id/rb_p3_b" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Un libro con todo el saber." />
+                <RadioButton android:id="@+id/rb_p3_c" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Un objeto que otorga poder." />
+                <RadioButton android:id="@+id/rb_p3_d" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Un objeto que garantiza bienestar." />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_pregunta_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="4. ¿Qué te motiva a trabajar duro?"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/rg_pregunta_3" />
+
+            <RadioGroup
+                android:id="@+id/rg_pregunta_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_pregunta_4"
+                app:layout_constraintBottom_toBottomOf="parent"> <RadioButton android:id="@+id/rb_p4_a" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Alcanzar la gloria y la fama." />
+                <RadioButton android:id="@+id/rb_p4_b" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="La satisfacción de dominar." />
+                <RadioButton android:id="@+id/rb_p4_c" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Una posición de liderazgo."/>
+                <RadioButton android:id="@+id/rb_p4_d" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="El compromiso con la palabra dada." />
+            </RadioGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</ScrollView>

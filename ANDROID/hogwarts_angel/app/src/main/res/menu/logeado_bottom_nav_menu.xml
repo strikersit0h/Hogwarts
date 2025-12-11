@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_inicio"
+        android:icon="@android:drawable/ic_dialog_info" 
+        android:title="Inicio" />
+
+    <item
+        android:id="@+id/nav_pociones"
+        android:icon="@android:drawable/ic_menu_save" 
+        android:title="Pociones" />
+
+    <item
+        android:id="@+id/nav_hechizos"
+        android:icon="@android:drawable/ic_menu_edit" 
+        android:title="Hechizos" />
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:icon="@android:drawable/ic_menu_myplaces" 
+        android:title="Perfil" />
+
+</menu>
