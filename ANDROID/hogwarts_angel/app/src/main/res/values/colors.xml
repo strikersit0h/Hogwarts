@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorGryffindor">#740001</color>
+    <color name="colorSlytherin">#1A472A</color>
+    <color name="colorHufflepuff">#FFDB00</color>
+    <color name="colorRavenclaw">#000A38</color>
+
+    <color name="colorDefault">#808080</color>
+
+    <color name="colorPergaminoClaro">#FFF8DC</color>
+    <color name="colorTextoOscuro">#3E2723</color>
+    <color name="colorBronceRol">#C29415</color>
 </resources>

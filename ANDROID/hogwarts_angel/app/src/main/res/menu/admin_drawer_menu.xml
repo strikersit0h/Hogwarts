@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_gestionar_usuarios"
+            android:icon="@drawable/ic_menu_people"
+            android:title="Gestionar Usuarios" />
+        <item
+            android:id="@+id/nav_gestionar_asignaturas"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="Gestionar Asignaturas" />
+        <item
+            android:id="@+id/nav_gestionar_hechizos"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Gestionar Hechizos" />
+        <item
+            android:id="@+id/nav_gestionar_pocimas"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="Gestionar Pócimas" />
+    </group>
+
+    <item android:title="Cuenta">
+        <menu>
+            <item
+                android:id="@+id/nav_cerrar_sesion"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Cerrar Sesión" />
+        </menu>
+    </item>
+</menu>

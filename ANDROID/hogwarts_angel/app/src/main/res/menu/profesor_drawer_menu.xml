@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_validar_pocimas"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="Validar Pócimas" />
+        <item
+            android:id="@+id/nav_validar_hechizos"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Validar Hechizos" />
+    </group>
+
+    <item android:title="Cuenta">
+        <menu>
+            <item
+                android:id="@+id/nav_cerrar_sesion_profesor"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Cerrar Sesión" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/logeado_nav_graph"
+    app:startDestination="@id/nav_inicio">
+
+    <fragment
+        android:id="@+id/nav_inicio"
+        android:name="com.example.hogwarts_angel.InicioFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_inicio" />
+
+    <fragment
+        android:id="@+id/nav_pociones"
+        android:name="com.example.hogwarts_angel.PocionesFragment"
+        android:label="Pociones"
+        tools:layout="@layout/fragment_pociones" />
+
+    <fragment
+        android:id="@+id/nav_hechizos"
+        android:name="com.example.hogwarts_angel.HechizosFragment"
+        android:label="Hechizos"
+        tools:layout="@layout/fragment_hechizos" />
+        
+    <fragment
+        android:id="@+id/nav_perfil"
+        android:name="com.example.hogwarts_angel.PerfilFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_perfil" />
+
+</navigation>
