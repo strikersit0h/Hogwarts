@@ -1,5 +1,9 @@
 package com.example
 
+import com.example.rutas.asignaturaRouting
+import com.example.rutas.hechizoRouting
+import com.example.rutas.ingredienteRouting
+import com.example.rutas.pocimaRouting
 import com.example.rutas.userRouting
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -16,5 +20,9 @@ fun Application.configureRouting() {
         // Static plugin. Try to access `/static/index.html`
         staticResources("/static", "static")
         userRouting()
+        hechizoRouting()
+        pocimaRouting()
+        asignaturaRouting()
+        ingredienteRouting()
     }
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="#FFF8DC"
+    android:elevation="2dp">
+    <View
+        android:id="@+id/view_house_color"
+        android:layout_width="8dp"
+        android:layout_height="0dp"
+        android:background="#FFD700"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_nombre_usuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#3E2723"
+        app:layout_constraintStart_toEndOf="@id/view_house_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_rol"
+        tools:text="Harry Potter" />
+
+    <TextView
+        android:id="@+id/tv_experiencia"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="14sp"
+        android:textColor="#8D6E63"
+        app:layout_constraintStart_toEndOf="@id/view_house_color"
+        app:layout_constraintTop_toBottomOf="@id/tv_nombre_usuario"
+        app:layout_constraintEnd_toStartOf="@id/tv_rol"
+        tools:text="Nivel: 5 | Experiencia: 4500" />
+
+    <TextView
+        android:id="@+id/tv_rol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:textColor="#C29415"
+        android:padding="4dp"
+        android:background="@drawable/bg_rol_badge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Profesor" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

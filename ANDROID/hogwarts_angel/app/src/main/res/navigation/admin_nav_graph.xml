@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_nav_graph"
+    app:startDestination="@id/nav_gestionar_usuarios">
+
+    <fragment
+        android:id="@+id/nav_gestionar_usuarios"
+        android:name="com.example.hogwarts_angel.GestionarUsuariosFragment"
+        android:label="Gestionar Usuarios"
+        tools:layout="@layout/fragment_gestionar_usuarios" />
+
+    <fragment
+        android:id="@+id/nav_gestionar_asignaturas"
+        android:name="com.example.hogwarts_angel.GestionarAsignaturasFragment"
+        android:label="Gestionar Asignaturas"
+        tools:layout="@layout/fragment_gestionar_asignaturas" />
+
+    <fragment
+        android:id="@+id/nav_gestionar_hechizos"
+        android:name="com.example.hogwarts_angel.GestionarHechizosFragment"
+        android:label="Gestionar Hechizos"
+        tools:layout="@layout/fragment_gestionar_hechizos" />
+        
+    <fragment
+        android:id="@+id/nav_gestionar_pocimas"
+        android:name="com.example.hogwarts_angel.GestionarPocimasFragment"
+        android:label="Gestionar Pócimas"
+        tools:layout="@layout/fragment_gestionar_pocimas" />
+
+</navigation>

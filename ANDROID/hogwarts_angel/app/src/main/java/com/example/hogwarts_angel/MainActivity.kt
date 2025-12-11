@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hogwarts_angel.databinding.ActivityMainBinding
 import com.example.hogwarts_angel.viewmodels.MainActivityViewModel
@@ -41,8 +42,59 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.usuarioAutenticado.observe(this) { usuario ->
             if (usuario != null) {
-                Toast.makeText(this, "Login exitoso. ¡Bienvenido, ${usuario.nombre}!", Toast.LENGTH_LONG).show()
-                viewModel.usuarioAutenticado.value = null // Limpiar LiveData
+                // Guardamos el usuario en el objeto de sesión
+                UserSession.usuarioLogueado = usuario
+                Toast.makeText(this, "Login exitoso. Obteniendo roles...", Toast.LENGTH_SHORT).show()
+                viewModel.obtenerRoles(usuario.id!!)
+            }
+        }
+
+        viewModel.rolesUsuario.observe(this) { roles ->
+            roles?.let {
+                viewModel.rolesUsuario.value = null
+
+                val usuario = UserSession.usuarioLogueado
+                if (usuario == null) {
+                    Toast.makeText(this, "Error: No se pudo recuperar la sesión del usuario.", Toast.LENGTH_SHORT).show()
+                    return@observe
+                }
+
+                val mapaRoles = mapOf(
+                    1 to "Dumbledore", 2 to "Administrador", 3 to "Usuario", 4 to "Profesor"
+                )
+
+                if (it.size > 1) {
+                    val rolesConNombre = it.map { id -> mapaRoles[id] ?: "Rol Desconocido ($id)" }
+                    val rolesArray = rolesConNombre.toTypedArray<CharSequence>()
+
+                    AlertDialog.Builder(this)
+                        .setTitle("Selecciona tu rol de acceso")
+                        .setItems(rolesArray) { _, which ->
+                            val idRolSeleccionado = it[which]
+                            val intent = when (idRolSeleccionado) {
+                                1 -> Intent(this, DumbledoreActivity::class.java)
+                                2 -> Intent(this, AdministradorActivity::class.java)
+                                4 -> Intent(this, ProfesorActivity::class.java)
+                                3 -> Intent(this, LogeadoActivity::class.java)
+                                else -> Intent(this, LogeadoActivity::class.java)
+                            }
+                            startActivity(intent)
+                        }
+                        .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
+                        .setCancelable(false)
+                        .show()
+
+                } else {
+                    val idRol = it.firstOrNull() ?: 3
+                    val intent = when (idRol) {
+                        1 -> Intent(this, DumbledoreActivity::class.java)
+                        2 -> Intent(this, AdministradorActivity::class.java)
+                        4 -> Intent(this, ProfesorActivity::class.java)
+                        3 -> Intent(this, LogeadoActivity::class.java)
+                        else -> Intent(this, LogeadoActivity::class.java)
+                    }
+                    startActivity(intent)
+                }
             }
         }
 
