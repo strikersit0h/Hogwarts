@@ -37,7 +37,11 @@ Cada usuario tendrá un nivel asociado que podrá aumentar con el tiempo o segú
 ### 🔹 Usuarios registrados en la BD
 
 Dumbledore - dumbledore@hogwarts.com - Dumbledore123
+
 Prueba1 - prueba1@hogwarts.com - Prueba123
+
 Prueba2 - prueba2@hogwarts.com - Prueba123
+
 Prueba3 - prueba3@hogwarts.com - Prueba123
+
 Prueba4 - prueba4@hogwarts.com - Prueba123
