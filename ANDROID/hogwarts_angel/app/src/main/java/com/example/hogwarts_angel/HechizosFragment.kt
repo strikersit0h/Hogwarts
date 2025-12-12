@@ -22,7 +22,7 @@ class HechizosFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHechizosBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -30,18 +30,15 @@ class HechizosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
+        adapter = HechizoDisponibleAdapter()
+        binding.rvHechizosDisponibles.adapter = adapter
+        binding.rvHechizosDisponibles.layoutManager = LinearLayoutManager(context)
 
         sharedViewModel.hechizosDisponibles.observe(viewLifecycleOwner, Observer { hechizos ->
             adapter.submitList(hechizos)
         })
     }
 
-    private fun setupRecyclerView() {
-        adapter = HechizoDisponibleAdapter()
-        binding.rvHechizosDisponibles.adapter = adapter
-        binding.rvHechizosDisponibles.layoutManager = LinearLayoutManager(context)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

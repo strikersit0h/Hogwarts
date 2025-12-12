@@ -24,7 +24,7 @@ class PocionesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentPocionesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,7 +32,12 @@ class PocionesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
+
+        adapter = IngredienteAdapter { ingrediente ->
+            viewModel.onIngredienteClicked(ingrediente.id)
+        }
+        binding.rvIngredientes.adapter = adapter
+        binding.rvIngredientes.layoutManager = LinearLayoutManager(context)
 
         // Observador para la lista de ingredientes
         viewModel.ingredientes.observe(viewLifecycleOwner, Observer { ingredientes ->
@@ -64,14 +69,6 @@ class PocionesFragment : Fragment() {
         }
 
         viewModel.fetchIngredientes()
-    }
-
-    private fun setupRecyclerView() {
-        adapter = IngredienteAdapter { ingrediente ->
-            viewModel.onIngredienteClicked(ingrediente.id)
-        }
-        binding.rvIngredientes.adapter = adapter
-        binding.rvIngredientes.layoutManager = LinearLayoutManager(context)
     }
 
     override fun onDestroyView() {

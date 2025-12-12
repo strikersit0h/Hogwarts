@@ -26,7 +26,7 @@ class ValidarHechizosFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentValidarHechizosBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,7 +34,11 @@ class ValidarHechizosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
+        adapter = ProfesorHechizoAdapter {
+                hechizo -> mostrarDialogoEliminar(hechizo)
+        }
+        binding.rvHechizosAValidar.adapter = adapter
+        binding.rvHechizosAValidar.layoutManager = LinearLayoutManager(context)
 
         viewModel.hechizos.observe(viewLifecycleOwner, Observer { hechizos ->
             adapter.submitList(hechizos)
@@ -48,14 +52,6 @@ class ValidarHechizosFragment : Fragment() {
         })
 
         viewModel.fetchHechizos()
-    }
-
-    private fun setupRecyclerView() {
-        adapter = ProfesorHechizoAdapter {
-            hechizo -> mostrarDialogoEliminar(hechizo)
-        }
-        binding.rvHechizosAValidar.adapter = adapter
-        binding.rvHechizosAValidar.layoutManager = LinearLayoutManager(context)
     }
 
     private fun mostrarDialogoEliminar(hechizo: Hechizo) {

@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hogwarts_angel.adapter.HechizoAdapter
 import com.example.hogwarts_angel.databinding.FragmentGestionarHechizosBinding
@@ -22,12 +21,8 @@ class GestionarHechizosFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: GestionarHechizosViewModel by viewModels()
-    private lateinit var adapter: HechizoAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGestionarHechizosBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,52 +30,48 @@ class GestionarHechizosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
+        val hechizosAdapter = HechizoAdapter(
+            onEditClick = ::mostrarDialogoCrearEditar,
+            onDeleteClick = ::mostrarDialogoEliminar
+        )
 
-        viewModel.hechizos.observe(viewLifecycleOwner, Observer { hechizos ->
-            adapter.submitList(hechizos)
-        })
-
-        viewModel.operacionExitosa.observe(viewLifecycleOwner, Observer { exito ->
-            if (exito) {
-                Toast.makeText(context, "Operación completada", Toast.LENGTH_SHORT).show()
-                viewModel.fetchHechizos()
-            }
-        })
+        binding.rvHechizos.adapter = hechizosAdapter
+        binding.rvHechizos.layoutManager = LinearLayoutManager(requireContext())
 
         binding.fabAgregarHechizo.setOnClickListener {
             mostrarDialogoCrearEditar(null)
         }
 
+        viewModel.hechizos.observe(viewLifecycleOwner) { hechizos ->
+            hechizosAdapter.submitList(hechizos)
+        }
+
+        viewModel.operacionExitosa.observe(viewLifecycleOwner) { exito ->
+            if (exito) {
+                Toast.makeText(context, "Operación completada", Toast.LENGTH_SHORT).show()
+                viewModel.fetchHechizos()
+            }
+        }
+
         viewModel.fetchHechizos()
     }
 
-    private fun setupRecyclerView() {
-        adapter = HechizoAdapter(
-            onEditClick = { hechizo ->
-                mostrarDialogoCrearEditar(hechizo)
-            },
-            onDeleteClick = { hechizo ->
-                mostrarDialogoEliminar(hechizo)
-            }
-        )
-        binding.rvHechizos.adapter = adapter
-        binding.rvHechizos.layoutManager = LinearLayoutManager(context)
-    }
-
     private fun mostrarDialogoCrearEditar(hechizo: Hechizo?) {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_crear_editar_hechizo, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_crear_editar_hechizo, null)
         val etNombre = dialogView.findViewById<EditText>(R.id.etNombreHechizo)
         val etDescripcion = dialogView.findViewById<EditText>(R.id.etDescripcionHechizo)
         val etPuntosExperiencia = dialogView.findViewById<EditText>(R.id.etPuntosExperiencia)
 
-        val dialogTitle = if (hechizo == null) "Crear Hechizo" else "Editar Hechizo"
-        etNombre.setText(hechizo?.nombre ?: "")
-        etDescripcion.setText(hechizo?.descripcion ?: "")
-        etPuntosExperiencia.setText(hechizo?.puntos_experiencia?.toString() ?: "0")
+        val esParaCrear = hechizo == null
+
+        if (!esParaCrear) {
+            etNombre.setText(hechizo.nombre)
+            etDescripcion.setText(hechizo.descripcion)
+            etPuntosExperiencia.setText(hechizo.puntos_experiencia.toString())
+        }
 
         AlertDialog.Builder(requireContext())
-            .setTitle(dialogTitle)
+            .setTitle(if (esParaCrear) "Crear Hechizo" else "Editar Hechizo")
             .setView(dialogView)
             .setPositiveButton("Guardar") { _, _ ->
                 val nombre = etNombre.text.toString()
@@ -88,10 +79,13 @@ class GestionarHechizosFragment : Fragment() {
                 val puntos = etPuntosExperiencia.text.toString().toIntOrNull() ?: 0
 
                 if (nombre.isNotBlank() && descripcion.isNotBlank()) {
-                    if (hechizo == null) {
-                        viewModel.crearHechizo(Hechizo(0, nombre, descripcion, puntos))
+                    if (esParaCrear) {
+                        viewModel.crearHechizo(Hechizo(nombre = nombre, descripcion = descripcion, puntos_experiencia = puntos))
                     } else {
-                        viewModel.actualizarHechizo(hechizo.id, Hechizo(hechizo.id, nombre, descripcion, puntos))
+                        hechizo.id?.let {
+                            val hechizoActualizado = hechizo.copy(nombre = nombre, descripcion = descripcion, puntos_experiencia = puntos)
+                            viewModel.actualizarHechizo(it, hechizoActualizado)
+                        }
                     }
                 }
             }
@@ -104,7 +98,7 @@ class GestionarHechizosFragment : Fragment() {
             .setTitle("Eliminar Hechizo")
             .setMessage("¿Estás seguro de que quieres eliminar '${hechizo.nombre}'?")
             .setPositiveButton("Eliminar") { _, _ ->
-                viewModel.eliminarHechizo(hechizo.id)
+                hechizo.id?.let { viewModel.eliminarHechizo(it) }
             }
             .setNegativeButton("Cancelar", null)
             .show()

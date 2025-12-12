@@ -26,7 +26,7 @@ class ValidarPocimasFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentValidarPocimasBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,7 +34,16 @@ class ValidarPocimasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
+        adapter = ValidarPocimaAdapter(
+            onApproveClick = { pocima ->
+                viewModel.validarPocima(pocima.id!!, true)
+            },
+            onRejectClick = { pocima ->
+                mostrarDialogoRechazo(pocima)
+            }
+        )
+        binding.rvPocimasAValidar.adapter = adapter
+        binding.rvPocimasAValidar.layoutManager = LinearLayoutManager(context)
 
         viewModel.pocimas.observe(viewLifecycleOwner, Observer { pocimas ->
             adapter.submitList(pocimas)
@@ -48,19 +57,6 @@ class ValidarPocimasFragment : Fragment() {
         })
 
         viewModel.fetchPocimas()
-    }
-
-    private fun setupRecyclerView() {
-        adapter = ValidarPocimaAdapter(
-            onApproveClick = { pocima ->
-                viewModel.validarPocima(pocima.id!!, true)
-            },
-            onRejectClick = { pocima ->
-                mostrarDialogoRechazo(pocima)
-            }
-        )
-        binding.rvPocimasAValidar.adapter = adapter
-        binding.rvPocimasAValidar.layoutManager = LinearLayoutManager(context)
     }
 
     private fun mostrarDialogoRechazo(pocima: Pocima) {
