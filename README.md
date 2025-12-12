@@ -31,3 +31,17 @@ Crearé diferentes roles dentro del sistema (por ejemplo, estudiante, profesor o
 ### 🔹 Niveles
 
 Cada usuario tendrá un nivel asociado que podrá aumentar con el tiempo o según las actividades que se vayan añadiendo más adelante.
+
+-----------------------
+
+### 🔹 Usuarios registrados en la BD
+
+Dumbledore - dumbledore@hogwarts.com - Dumbledore123
+
+Prueba1 - prueba1@hogwarts.com - Prueba123
+
+Prueba2 - prueba2@hogwarts.com - Prueba123
+
+Prueba3 - prueba3@hogwarts.com - Prueba123
+
+Prueba4 - prueba4@hogwarts.com - Prueba123
